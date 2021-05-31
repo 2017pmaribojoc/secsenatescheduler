@@ -74,6 +74,11 @@
             <version>${org.mapstruct.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+        </dependency>
+
         <!-- Test Dependencies-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -86,6 +91,7 @@
             <version>3.0.10.RELEASE</version>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
 
