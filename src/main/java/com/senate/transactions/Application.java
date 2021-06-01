@@ -32,7 +32,7 @@ public class Application {
 				List<Record> records = client.getDailyTransactions(key);
 				return records.get(0).getFirstName();
 			} else {
-				return "hi";
+				return "error processing stock filings";
 
 			}
 		};

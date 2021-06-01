@@ -20,8 +20,6 @@ public class SenateStockWatcherClientImpl implements SenateStockWatcherClient {
     @Value("${filemap.xml.url}")
     private String filemapXMLUrl;
 
-    private String baseDailyTransactionsUrl;
-
     private final RestTemplate restTemplate;
 
     public SenateStockWatcherClientImpl(RestTemplateBuilder restTemplateBuilder){
