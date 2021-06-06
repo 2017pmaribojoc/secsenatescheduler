@@ -8,6 +8,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,19 +29,24 @@ public class SenateStockWatcherClientImpl implements SenateStockWatcherClient {
 
     @Override
     public ListBucketFileMap getFilemapList() {
+        System.out.println("Start getFilemapList: " + LocalDateTime.now());
         String url = baseUrl + filemapXMLUrl;
         ListBucketFileMap listBucketFileMap = new ListBucketFileMap();
         Contents[] list = restTemplate.getForObject(url, Contents[].class);
         if (list != null)
             listBucketFileMap.setContents(Arrays.asList(list));
+        System.out.println("End getFilemapList: " + LocalDateTime.now());
         return listBucketFileMap;
     }
 
     @Override
     public List<Record> getDailyTransactions(String jsonFilename) {
+        System.out.println("Start getDailyTransactions: " + LocalDateTime.now());
+
         String url = baseUrl + jsonFilename;
 
         List<Record> records = Arrays.asList(restTemplate.getForObject(url, Record[].class));
+        System.out.println("End getDailyTransactions: " + LocalDateTime.now());
         return records;
     }
 }

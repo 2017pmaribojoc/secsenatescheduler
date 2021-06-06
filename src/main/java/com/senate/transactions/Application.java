@@ -1,5 +1,6 @@
 package com.senate.transactions;
 
+import com.senate.transactions.client.senatestockwatcher.RecordDataCleaner;
 import com.senate.transactions.client.senatestockwatcher.SenateStockWatcherClient;
 import com.senate.transactions.model.ListBucketFileMap;
 import com.senate.transactions.model.Record;
@@ -9,6 +10,7 @@ import org.springframework.cloud.function.context.FunctionalSpringApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 @SpringBootApplication
@@ -21,15 +23,20 @@ public class Application {
 	@Autowired
 	private SenateStockWatcherClient client;
 
+	@Autowired
+	private RecordDataCleaner recordDataCleaner;
+
 	@Bean
 	public Function<String, String> processStockFilings() {
 		return value -> {
 			ListBucketFileMap listBucketFileMap = client.getFilemapList();
+
 			if (listBucketFileMap != null && listBucketFileMap.getContents() != null &&
 					!listBucketFileMap.getContents().isEmpty()) {
 
 				String key = listBucketFileMap.getContents().get(0).getKey();
 				List<Record> records = client.getDailyTransactions(key);
+				records.forEach(recordDataCleaner::cleanData);
 				return records.get(0).getFirstName();
 			} else {
 				return "error processing stock filings";
