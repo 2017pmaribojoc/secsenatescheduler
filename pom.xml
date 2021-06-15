@@ -48,6 +48,12 @@
             <version>1.1.0</version>
             <scope>provided</scope>
         </dependency>
+        <!-- aws-java-dynamodb-sdk -->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-dynamodb</artifactId>
+            <version>1.11.926</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>

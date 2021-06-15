@@ -1,0 +1,6 @@
+base:
+  url: https://senate-stock-watcher-data.s3-us-west-2.amazonaws.com/
+
+filemap:
+  xml:
+    url: aggregate/filemap.xml
