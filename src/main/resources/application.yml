@@ -4,3 +4,14 @@ base:
 filemap:
   xml:
     url: aggregate/filemap.xml
+
+# configuration required for DynamoDB Local. Don't store AWS credentials in a configuration file use AWS Secrets Manager instead.
+# https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/manage-credentials-using-aws-secrets-manager.html
+amazon:
+  access:
+    key: key
+    secretkey: secret-key
+  region: us-east-1
+dynamodb:
+  endpoint:
+    url: http://localhost:8000/

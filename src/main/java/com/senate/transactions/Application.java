@@ -1,5 +1,8 @@
 package com.senate.transactions;
 
+import com.senate.transactions.client.db.DAO;
+import com.senate.transactions.client.db.DTOMapper;
+import com.senate.transactions.client.db.model.Transaction;
 import com.senate.transactions.client.senatestockwatcher.RecordDataCleaner;
 import com.senate.transactions.client.senatestockwatcher.SenateStockWatcherClient;
 import com.senate.transactions.model.ListBucketFileMap;
@@ -10,7 +13,6 @@ import org.springframework.cloud.function.context.FunctionalSpringApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 @SpringBootApplication
@@ -26,6 +28,12 @@ public class Application {
 	@Autowired
 	private RecordDataCleaner recordDataCleaner;
 
+	@Autowired
+	private DTOMapper dtoMapper;
+
+	@Autowired
+	private DAO dao;
+
 	@Bean
 	public Function<String, String> processStockFilings() {
 		return value -> {
@@ -34,9 +42,12 @@ public class Application {
 			if (listBucketFileMap != null && listBucketFileMap.getContents() != null &&
 					!listBucketFileMap.getContents().isEmpty()) {
 
-				String key = listBucketFileMap.getContents().get(0).getKey();
+				String key = listBucketFileMap.getContents().get(1).getKey();
 				List<Record> records = client.getDailyTransactions(key);
 				records.forEach(recordDataCleaner::cleanData);
+				List<Transaction> dtoTransactions = dtoMapper.transform(records);
+				dao.update(dtoTransactions);
+
 				return records.get(0).getFirstName();
 			} else {
 				return "error processing stock filings";
